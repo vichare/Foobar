@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -34,13 +35,30 @@ int main(int argc, char* argv[]) {
         }
         ++str;
     }
-    cout << "argv[1] == " << argv[1] << endl;
     char * name = argv[1];
-    char cmd[200];
-    sprintf(cmd, "mkdir %s", name); system (cmd);
-    sprintf(cmd, "cp _t.cpp %s/%s.cpp", name, name); system (cmd);
-    sprintf(cmd, "touch %s/%s.in", name); system (cmd);
-    sprintf(cmd, "sed \"s/#/%s/g\" < _run.bat > %s/run.bat", name, name, name); system (cmd);
+
+    ostringstream cmd;
+
+    cmd << "mkdir " << name;
+    cout << cmd.str() << endl;
+    system(cmd.str().c_str());
+    cmd.str("");
+
+    cmd << "cp _t.cpp " << name << "/" << name << ".cpp";
+    cout << cmd.str() << endl;
+    system(cmd.str().c_str());
+    cmd.str("");
+
+    cmd << "touch " << name << "/" << name << ".in";
+    cout << cmd.str() << endl;
+    system(cmd.str().c_str());
+    cmd.str("");
+
+    cmd << "sed \"s/#/" << name << "/g\" < _run.bat > " << name << "/run.bat";
+    cout << cmd.str() << endl;
+    system(cmd.str().c_str());
+    cmd.str("");
+
     return 0;
 }
 
