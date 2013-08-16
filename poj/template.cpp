@@ -59,6 +59,11 @@ int main(int argc, char* argv[]) {
     system(cmd.str().c_str());
     cmd.str("");
 
+    cmd << "sed \"s/%PROGRAM%/" << name << "/g\" < _run > " << name << "/run";
+    cout << cmd.str() << endl;
+    system(cmd.str().c_str());
+    cmd.str("");
+
     return 0;
 }
 

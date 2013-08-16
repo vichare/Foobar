@@ -1,0 +1,25 @@
+#!/bin/sh
+
+display_help() {
+    echo "Usage: run <datafile-prefix>"
+    echo "It's equivalent to:"
+    echo "program < datafile.in > datafile.out"
+    exit 1
+}
+
+if [ $# -ge 1 ]; then
+    display_help
+fi
+
+if [ $# -eq 0 ]; then
+    %PROGRAM% < %PROGRAM%.in > %PROGRAM%.out
+elif [ $# -eq 1 ]; then
+    %PROGRAM% < $1.in > $1.out
+else
+    display_help
+fi
+
+
+
+
+
