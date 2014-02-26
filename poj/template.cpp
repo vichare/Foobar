@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    char *str = argv[0];
+    char *str = argv[1];
     while (*str) {
         // if any char in the string is not valid
         if ( !(
