@@ -1,0 +1,12 @@
+(define (unittest statement value casenum)
+  (if (= statement value)
+    (display (format "Unittest #~d Passed.\n" casenum))
+    (display (format "Unittest #~d Failed!!!\n" casenum))
+  )
+)
+(define (assert statement value casenum)
+  (if (= statement value)
+    nil
+    (display (format "Assertion #~d Failed!!!\n" casenum))
+  )
+)
