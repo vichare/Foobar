@@ -1,0 +1,15 @@
+(include "assert.ss")
+(define (sum term a next b)
+  (define (iter a result)
+    (if (> a b)
+      result
+      (iter (next a) (+ result (term a)))
+    )
+  )
+  (iter a 0)
+)
+;(define (identity a) a)
+;(define (inc a) (+ a 1))
+(sum (lambda (x) x) 1 (lambda (x) (+ x 1)) 100)
+(sum (lambda (x) (/ 8.0 (* x (+ x 2)))) 1 (lambda (x) (+ x 4)) 1000000)
+
