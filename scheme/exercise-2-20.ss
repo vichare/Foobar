@@ -1,3 +1,5 @@
+(define (lp) (load "E:/program/GitHub/Foobar/scheme/exercise-2-20.ss"))
+
 (define (same-parity a . l)
   (define (same-parity-list a l)
     (cond 
