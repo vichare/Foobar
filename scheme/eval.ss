@@ -1,5 +1,31 @@
 (define (lp) (load "E:/program/GitHub/Foobar/scheme/eval.ss"))
 
+(define (self-evaluating? exp) ())
+(define (variable? exp) ())
+(define (quoted? exp) ())
+(define (assignment? exp) ())
+(define (definition? exp) ())
+(define (if? exp) ())
+(define (lambda? exp) ())
+(define (begin? exp) ())
+(define (cond? exp) ())
+(define (application? exp) ())
+(define (lookup-variable-value exp env) ())
+(define (text-of-quotation exp) ())
+(define (eval-assignment exp env) ())
+(define (eval-definition exp env) ())
+(define (eval-if exp env) ())
+(define (make-procedure x1 x2 env) ())
+(define (lambda-parameters exp) ())
+(define (lambda-body exp) ())
+(define (eval-sequence exp env) ())
+(define (begin-actions exp) ())
+(define (cond->if exp) ())
+(define (apply f p) ())
+(define (operator exp) ())
+(define (list-of-values op env) ())
+
+
 (define (eval exp env)
   (cond
     ((self-evaluating? exp) exp)
@@ -26,3 +52,5 @@
     )
   )
 )
+
+(eval '() init-env)
