@@ -1,33 +1,36 @@
 
 function heart()
-    fps = 5;
+    fps = 10;
+    n = 36
     
     figure;
     hold on;
     axis([-1 1 -1 1]);
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
-    for i = -9 : -1
+    set(gca,'xcolor',[1,1,1],'ycolor',[1,1,1]);
+    %axis off;
+    for i = -n : -1
         t1 = i;
-        t2 = i + 9;
-        draw(t1, t2);
-        frame(i + 10) = getframe;
+        t2 = i + n;
+        draw(t1, t2, n);
+        frame(i + n + 1) = getframe;
         pause(1/fps);
     end
     
-    for i = 0 : 17
+    for i = 0 : (2*n-1) 
         t1 = i;
-        t2 = 2 * i + 9;
-        draw(t1, t2);
-        frame(i + 10) = getframe;
+        t2 = 2 * i + n;
+        draw(t1, t2, n);
+        frame(i + n + 1) = getframe;
         pause(1/fps);
     end
 
-    for i = 18 : 27
+    for i = 2*n : 3*n
         t1 = i;
-        t2 = i - 9;
-        draw(t1, t2);
-        frame(i + 10) = getframe;
+        t2 = i - n;
+        draw(t1, t2, n);
+        frame(i + n + 1) = getframe;
         pause(1/fps);
     end
     
@@ -44,12 +47,12 @@ function heart()
     end
 end
 
-function draw(t1, t2)
+function draw(t1, t2, n)
     L = 1;
-    x1 = L * cos(t1 / 18 * pi);
-    y1 = L * sin(t1 / 18 * pi);
-    x2 = L * cos(t2 / 18 * pi);
-    y2 = L * sin(t2 / 18 * pi);
+    x1 = L * cos(t1 / 2 / n * pi);
+    y1 = L * sin(t1 / 2 / n * pi);
+    x2 = L * cos(t2 / 2 / n * pi);
+    y2 = L * sin(t2 / 2 / n * pi);
     plot([x1, x2],[y1, y2], 'r');
 end
 
