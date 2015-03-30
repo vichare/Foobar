@@ -29,7 +29,10 @@ testPassed = result == (fmap (uncurry ifmatch) list)
 
 type NextStateTable = [(Match, State)]
 
-lookupNextStateTable :: Char -> NextStateTable
+lookupNextStateTable :: Char -> NextStateTable -> State
+lookupNextStateTable c table = case lookup c table of
+    Nothing -> Nothing
+    Just s  -> s
 
 type TransientTable = [(State, NextStateTable)]
 
