@@ -4,6 +4,8 @@
 module Vichare.DFA where
 import Debug.Trace
 
+debug = flip trace
+
 type State = Maybe Int
 
 data Match = MatchSingle Char
@@ -60,8 +62,8 @@ parseDFAHelper (c:cs) state trans =
         Nothing    -> Nothing
         Just table -> case lookupNextStateTable c table of
             Nothing   -> Nothing
-            nextState -> trace ("State: " ++ show state ++ " -" ++ show c ++ "-> " ++ show nextState) 
-                         $ parseDFAHelper cs nextState trans
+            nextState -> parseDFAHelper cs nextState trans
+                         `debug` ("State: " ++ show state ++ " --" ++ show c ++ "--> " ++ show nextState) 
 
 --------------------------------------------------------------------
 -- test
@@ -71,7 +73,7 @@ alphabetTable :: [Int] -> Char -> NextStateTable
 alphabetTable [] startChar = []
 alphabetTable (i:is) startChar = ((MatchSingle startChar, Just i) : alphabetTable is (succ startChar))
 
-testInput = "bceadgfcbacbedfadgz"
+testInput = "bceadgfcbacbedfadg"
 
 testTransientTable = [
     (Just 0, alphabetTable [0..6] 'a'), 
@@ -86,10 +88,6 @@ testTransientTable = [
 testDFA = DFA (Just 0) testTransientTable [Just 5, Just 6]
 
 result = parseDFA testInput  testDFA
-
--- test whether prefixs of a string is a valid token
---testDFA :: [Char] -> DFA -> [Bool]
---testDFA :: [Char] -> DFA -> [State]
 
 
 
