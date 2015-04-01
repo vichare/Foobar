@@ -1,15 +1,20 @@
 
+-- It's ugly, I'll rewrite this
+
 module Vichare.DFA where
+import Debug.Trace
 
 type State = Maybe Int
 
 data Match = MatchSingle Char
            | MatchRange Char Char
+           | MatchAll
     deriving Show
 
 ifmatch :: Match -> Char -> Bool
 ifmatch (MatchSingle key) c = (c == key)
 ifmatch (MatchRange k1 k2) c = (c >= k1) && (c <= k2)
+ifmatch MatchAll c = True
 
 {-
 list = [
@@ -30,9 +35,11 @@ testPassed = result == (fmap (uncurry ifmatch) list)
 type NextStateTable = [(Match, State)]
 
 lookupNextStateTable :: Char -> NextStateTable -> State
-lookupNextStateTable c table = case lookup c table of
-    Nothing -> Nothing
-    Just s  -> s
+lookupNextStateTable c [] = Nothing
+lookupNextStateTable c ((match, state): xs) = if ifmatch match c
+    then state
+    else lookupNextStateTable c xs
+
 
 type TransientTable = [(State, NextStateTable)]
 
@@ -51,8 +58,38 @@ parseDFAHelper _ Nothing _ = Nothing
 parseDFAHelper (c:cs) state trans = 
     case lookup state trans of
         Nothing    -> Nothing
-        Just table -> case --lookup state table of
-                          --Nothing        -> Nothing
-                          --Just nextState -> parseDFAHelper cs nextState table
+        Just table -> case lookupNextStateTable c table of
+            Nothing   -> Nothing
+            nextState -> trace ("State: " ++ show state ++ " -" ++ show c ++ "-> " ++ show nextState) 
+                         $ parseDFAHelper cs nextState trans
 
--- elem
+--------------------------------------------------------------------
+-- test
+--------------------------------------------------------------------
+
+alphabetTable :: [Int] -> Char -> NextStateTable
+alphabetTable [] startChar = []
+alphabetTable (i:is) startChar = ((MatchSingle startChar, Just i) : alphabetTable is (succ startChar))
+
+testInput = "bceadgfcbacbedfadgz"
+
+testTransientTable = [
+    (Just 0, alphabetTable [0..6] 'a'), 
+    (Just 1, alphabetTable [1,3,0,6,4,2,5] 'a'), 
+    (Just 2, alphabetTable [2,4,0,1,5,6,3] 'a'), 
+    (Just 3, alphabetTable [3,2,5,1,4,0,6] 'a'), 
+    (Just 4, alphabetTable [4,1,0,3,6,2,5] 'a'), 
+    (Just 5, alphabetTable [5,1,3,4,6,0,2] 'a'), 
+    (Just 6, alphabetTable [6,5,1,2,4,3,0] 'a')
+    ]
+
+testDFA = DFA (Just 0) testTransientTable [Just 5, Just 6]
+
+result = parseDFA testInput  testDFA
+
+-- test whether prefixs of a string is a valid token
+--testDFA :: [Char] -> DFA -> [Bool]
+--testDFA :: [Char] -> DFA -> [State]
+
+
+
