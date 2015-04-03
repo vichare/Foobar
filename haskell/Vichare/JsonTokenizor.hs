@@ -1,6 +1,7 @@
 
 module Vichare.JsonTokenizor where
 import Vichare.DFA2
+import Vichare.JsonDFA
 
 data JSON_TOKEN = LeftBrace
                 | RightBrace
@@ -18,7 +19,7 @@ data JSON_TOKEN = LeftBrace
 jsonTokenize :: String -> [JSON_TOKEN]
 jsonTokenize input = undefined
 
---jsonNumber 
---jsonDFA = undefined
+
+
 
 
