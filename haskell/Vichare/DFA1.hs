@@ -1,12 +1,10 @@
 
 -- It's ugly, I'll rewrite this
 
-module Vichare.DFA where
+module Vichare.DFA1 where
 import Debug.Trace
 
 debug = flip trace
-
-type State = Maybe Int
 
 data Match = MatchSingle Char
            | MatchRange Char Char
@@ -17,6 +15,8 @@ ifmatch :: Match -> Char -> Bool
 ifmatch (MatchSingle key) c = (c == key)
 ifmatch (MatchRange k1 k2) c = (c >= k1) && (c <= k2)
 ifmatch MatchAll c = True
+
+type State = Maybe Int
 
 {-
 list = [
@@ -90,4 +90,23 @@ testDFA = DFA (Just 0) testTransientTable [Just 5, Just 6]
 result = parseDFA testInput  testDFA
 
 
-
+{-
+State: Just 0 --'b'--> Just 1
+State: Just 1 --'c'--> Just 0
+State: Just 0 --'e'--> Just 4
+State: Just 4 --'a'--> Just 4
+State: Just 4 --'d'--> Just 3
+State: Just 3 --'g'--> Just 6
+State: Just 6 --'f'--> Just 3
+State: Just 3 --'c'--> Just 5
+State: Just 5 --'b'--> Just 1
+State: Just 1 --'a'--> Just 1
+State: Just 1 --'c'--> Just 0
+State: Just 0 --'b'--> Just 1
+State: Just 1 --'e'--> Just 4
+State: Just 4 --'d'--> Just 3
+State: Just 3 --'f'--> Just 0
+State: Just 0 --'a'--> Just 0
+State: Just 0 --'d'--> Just 3
+State: Just 3 --'g'--> Just 6
+-}
