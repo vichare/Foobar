@@ -1,6 +1,15 @@
 
-module Vichare.JsonTokenizor(JSON_TOKEN, jsonTokenize) where
---module Vichare.JsonTokenizor where
+--
+-- if I want to rewrite this, I will remove workshop (only two parameters)
+-- and change the return type to "Either [Json_TOKEN] String" 
+-- (Right errorMessage)
+--
+-- TODO : Current ErrorHandler just return the rest string as a ErrorToken
+-- We can try to delete some chars to recover the process
+--
+
+module Vichare.JsonTokenizer(JSON_TOKEN, jsonTokenize) where
+--module Vichare.JsonTokenizer where
 import Vichare.DFA2
 import Vichare.JsonDFA
 import Data.Char
@@ -81,12 +90,6 @@ tryKeywords input ((k, token):kws)
         if take len input == k
         then (drop len input, Just token)
         else tryKeywords input kws
-
---jsonNumber 
---jsonDFA = undefined
-
-
-
 
 
 

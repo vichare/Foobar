@@ -1,6 +1,6 @@
 
 import Data.List
-import Vichare.JsonTokenizor
+import Vichare.JsonTokenizer
 
 jsonCases = [
       "{}"
