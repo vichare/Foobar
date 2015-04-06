@@ -3,6 +3,8 @@
 
 module Vichare.DFA2 where
 import Vichare.Match
+--import Debug.Trace
+--debug = flip trace
 
 type NextStateTable state = [(CharMatch, state)]
 type TransientTable state = [(state, NextStateTable state)]
@@ -26,12 +28,20 @@ next_state transTable currentState c errorState =
     case lookup currentState transTable of
         Nothing    -> error ("Invalid state " ++ (show currentState))
         Just table -> lookup_next_state_table table c errorState
+                      --`debug` ("State: " ++ show currentState ++ " --" ++ show c ++ "--> ") 
 
 -- longest_match take a String and a DFA,
 -- find the longest prefix to get a valid match before reaching the error state.
 -- if no valid match can be found, return the error state.
-longest_match :: (Eq state, Show state) => [Char] -> DFA state -> (state, [Char], [Char])
-longest_match input dfa = longest_match_helper input "" dfa (start_state dfa) (error_state dfa, input, "")
+longest_match_detail :: (Eq state, Show state) => [Char] -> DFA state -> (state, [Char], [Char])
+longest_match_detail input dfa = longest_match_helper input "" dfa (start_state dfa) (error_state dfa, input, "")
+
+longest_match :: (Eq state, Show state) => [Char] -> DFA state -> (Maybe [Char], [Char])
+longest_match input dfa = 
+    let (state, remain, match) = longest_match_helper input "" dfa (start_state dfa) (error_state dfa, input, "") in
+        if state /= error_state dfa
+        then (Just match, remain)
+        else (Nothing, input)
 
 -- the helper takes two extra parameters:
 -- the current state, and the temporary result to be return
