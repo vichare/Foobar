@@ -8,7 +8,10 @@
 -- We can try to delete some chars to recover the process
 --
 
-module Vichare.JsonTokenizer(JSON_TOKEN, jsonTokenize) where
+module Vichare.JsonTokenizer(
+          JSON_TOKEN(..)
+        , jsonTokenize
+        ) where
 --module Vichare.JsonTokenizer where
 import Vichare.DFA2
 import Vichare.JsonDFA
