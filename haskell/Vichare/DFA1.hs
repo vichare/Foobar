@@ -12,7 +12,7 @@ data Match = MatchSingle Char
     deriving Show
 
 ifmatch :: Match -> Char -> Bool
-ifmatch (MatchSingle key) c = (c == key)
+ifmatch (MatchSingle key) c = c == key
 ifmatch (MatchRange k1 k2) c = (c >= k1) && (c <= k2)
 ifmatch MatchAll c = True
 
@@ -51,10 +51,10 @@ data DFA = DFA {
     , finalStates   :: [State]
     } deriving Show
 
-parseDFA :: [Char] -> DFA -> Bool
-parseDFA str (DFA start trans finals) = (parseDFAHelper str start trans) `elem` finals
+parseDFA :: String -> DFA -> Bool
+parseDFA str (DFA start trans finals) = parseDFAHelper str start trans `elem` finals
 
-parseDFAHelper :: [Char] -> State -> TransientTable -> State
+parseDFAHelper :: String -> State -> TransientTable -> State
 parseDFAHelper [] state _ = state
 parseDFAHelper _ Nothing _ = Nothing
 parseDFAHelper (c:cs) state trans = 
@@ -71,7 +71,7 @@ parseDFAHelper (c:cs) state trans =
 
 alphabetTable :: [Int] -> Char -> NextStateTable
 alphabetTable [] startChar = []
-alphabetTable (i:is) startChar = ((MatchSingle startChar, Just i) : alphabetTable is (succ startChar))
+alphabetTable (i:is) startChar = (MatchSingle startChar, Just i) : alphabetTable is (succ startChar)
 
 testInput = "bceadgfcbacbedfadg"
 

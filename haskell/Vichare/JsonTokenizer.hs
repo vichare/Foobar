@@ -61,7 +61,7 @@ helper FindOneToken ws@(WS input@(x:xs) tokens)
     | x == ','    = helper DeleteSpace (WS xs (Comma:tokens))
     | x == '"'    = helper FindString ws
     | x == '-'    = helper FindNumber ws
-    | x >= '0' && x <= '9' = helper FindNumber ws
+    | isDigit x   = helper FindNumber ws
     | otherwise   = case tryKeywords input keywords of
                     (_, Nothing)         -> helper HandleError ws
                     (remain, Just token) -> helper DeleteSpace (WS remain (token:tokens))
@@ -69,16 +69,16 @@ helper FindOneToken ws@(WS input@(x:xs) tokens)
 helper FindNumber ws@(WS input tokens)
     = let (match, remain) = longest_match input jsonNumberDFA in
         case match of
-        Just matchstr -> helper DeleteSpace (WS remain ((JsonNumber matchstr):tokens))
+        Just matchstr -> helper DeleteSpace (WS remain (JsonNumber matchstr : tokens))
         Nothing       -> helper HandleError ws
 
 helper FindString ws@(WS input tokens)
     = let (match, remain) = longest_match input jsonStringDFA in
         case match of
-        Just matchstr -> helper DeleteSpace (WS remain ((JsonString matchstr):tokens))
+        Just matchstr -> helper DeleteSpace (WS remain (JsonString matchstr : tokens))
         Nothing       -> helper HandleError ws
 
-helper HandleError (WS input tokens) = (ErrorToken input):tokens
+helper HandleError (WS input tokens) = ErrorToken input : tokens
 
 keywords = [
       ("true",  JsonTrue)
